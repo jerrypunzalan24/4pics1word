@@ -1,0 +1,99 @@
+Level <b id = 'level' ></b>
+<div align ='center'>
+<img class ='images' src ='assets/img/bully1.jpg' width = '200' height ='200'/>
+<img class ='images' src ='assets/img/bully2.jpg' width = '200' height ='200'/>
+<br/>
+<img class ='images' src ='assets/img/bully3.jpg' width = '200' height ='200'/>
+<img class ='images' src ='assets/img/bully4.jpg' width = '200' height ='200'/>
+<div>
+<input class ='characters' type ='text' maxlength ='1' size ='1'>
+<input class ='characters' type ='text' maxlength ='1' size ='1'>
+<input class ='characters' type ='text' maxlength ='1' size ='1'>
+<input class ='characters' type ='text' maxlength ='1' size ='1'>
+<input class ='characters' type ='text' maxlength ='1' size ='1'>
+<input class ='characters' type ='text' maxlength ='1' size ='1'>
+<br/>
+<br/>
+<input class ='characters' type ='text' maxlength ='1' size ='1'>
+<input class ='characters' type ='text' maxlength ='1' size ='1'>
+<input class ='characters' type ='text' maxlength ='1' size ='1'>
+<input class ='characters' type ='text' maxlength ='1' size ='1'>
+<input class ='characters' type ='text' maxlength ='1' size ='1'>
+<input class ='characters' type ='text' maxlength ='1' size ='1'>
+</div>
+<br/>
+<form>
+<input type ='text' name ='youranswer' id = 'youranswer' placeholder = 'Your answer' REQUIRED/>
+<input type ='submit' id = 'submitanswer' value = 'Submit'/>
+</form>
+</div>
+
+<script>
+// Variable declarations
+var characters = document.getElementsByClassName("characters")
+var images = document.getElementsByClassName("images")
+var level = 0
+var alphabets = "abcdefghijklmnopqrstuvwxyz"
+var answers = new Array(
+    "bully",
+    "crying",
+    "friends",
+    "greedy",
+    "lonely",
+    "playing",
+    "shout",
+    "study",
+    "taunt",
+    "tease",
+)
+var yourAnswer = document.getElementById("youranswer")
+
+console.log(getFilename(images[0].src))
+function startgame(){
+    document.getElementById("level").innerHTML = (level + 1) +""
+    if(level > answers.length){
+        document.getElementById("level").innerHTML = "Congrats"
+    }
+    if(level == 0){
+        shuffleArray(answers)
+    }
+    answerbank = answers[level].split('')
+    yourAnswer.value = ""
+    images[0].src = images[0].src.replace(getFilename(images[0].src), answers[level])
+    images[1].src = images[1].src.replace(getFilename(images[1].src), answers[level])
+    images[2].src = images[2].src.replace(getFilename(images[2].src), answers[level])
+    images[3].src = images[3].src.replace(getFilename(images[3].src), answers[level])
+    for(var x = 0; x < 12 - answers[level].length; x++ ){
+        answerbank.push(alphabets[Math.floor(Math.random()  * alphabets.length)])
+    }
+    shuffleArray(answerbank)
+    for(var x = 0; x < characters.length; x++){
+        characters[x].value = answerbank[x]
+    }
+    console.log(answerbank)
+    console.log(answers[level])
+}
+
+
+document.getElementById("submitanswer").addEventListener("click", function(e){
+    e.preventDefault()
+    console.log("Clicked")
+    if(yourAnswer.value.toLowerCase() == answers[level]){
+        console.log("Correct")
+        level++;
+        startgame()
+    }
+})
+function getFilename(str){
+    return str.substring(str.lastIndexOf('/')+1, str.lastIndexOf('.')-1) 
+}
+function shuffleArray(array){
+    for (var x = 0; x < array.length; x++){
+        var y = Math.floor(Math.random() * (x + 1)) % array.length
+        var temp = array[x]
+        array[x] = array[y]
+        array[y] = temp
+    }
+}
+startgame()
+</script>
